@@ -143,4 +143,11 @@ test("checked status of checkboxes changes when user clicks them", () => {
 
 test("a message is displayed when the user clicks the Submit button", () => {
   // your test code here
+  render (<App />)
+
+  userEvent.click(screen.getByRole("button", { name: /submit/i }))
+
+  expect(screen.getByText(/you are now subscribed/i)).toBeInTheDocument()
+
+
 });

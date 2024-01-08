@@ -88,8 +88,9 @@ function App() {
           onChange={toggleJavascript}
         />
         <label htmlFor="javascript">JavaScript</label>
+        <button type="submit">Submit</button>
       </form>
-      <button type="submit">Submit</button>
+      { formSubmitted ? <h2>{name} you are now subscribed!</h2> : null }
     </main>
   );
 }
