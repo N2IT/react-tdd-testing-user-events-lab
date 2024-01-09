@@ -5,18 +5,91 @@ function App() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [formSubmitted, setFormAsSubmitted] = useState(false)
-  const [htmlIsChecked, setHtmlAsChecked] = useState(false)
-  const [cssIsChecked, setCssAsChecked] = useState(false)
-  const [javascriptIsChecked, setJavascriptAsChecked] = useState(false)
+  const [interests, setInterestsAsChecked] = useState({
+    html: false,
+    css: false,
+    javascript: false,
+  })
+  // const [cssIsChecked, setCssAsChecked] = useState(false)
+  // const [javascriptIsChecked, setJavascriptAsChecked] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setFormAsSubmitted(true)
+    console.log(interests)
   }
 
-  const toggleHtml = (e) => setHtmlAsChecked(e.target.checked)
-  const toggleCss = (e) => setCssAsChecked(e.target.checked)
-  const toggleJavascript = (e) => setJavascriptAsChecked(e.target.checked)
+  const updateInterests = (e) =>
+    setInterestsAsChecked({ ...interests, [e.target.id]: e.target.checked })
+
+  const displayMessage = (
+    <div>
+      <label htmlFor="thank you">Thank You!</label>
+      <p>Thanks {name}! You are signed up for these Newsletters:</p>
+      <ul>
+        {interests.html ? <li>Html</li> : null}
+        {interests.css ? <li>CSS</li> : null}
+        {interests.javascript ? <li>JavaScript</li> : null}
+      </ul>
+    </div>
+  )
+
+  const displayForm = (
+    <form onSubmit={handleSubmit}>
+    <h3>Sign up for my Newsletter!</h3>
+    <label htmlFor="name">Enter your Name: </label>
+    <input
+      type="text"
+      value={name}
+      placeholder="Name"
+      id="name"
+      data-testid="name"
+      onChange={(e) => setName(e.target.value)}
+    />
+    <label htmlFor="email">Enter your email address: </label>
+    <input
+      type="text"
+      value={email}
+      id="email"
+      data-testid="email"
+      onChange={(e) => setEmail(e.target.value)}
+      placeholder='Email address'
+    />
+    <p>Select your interests</p>
+    <input
+      name="html"
+      type="checkbox"
+      id="html"
+      data-testid="html"
+      checked={interests.html}
+      aria-checked={interests.html}
+      onChange={updateInterests}
+    />
+    <label htmlFor="html">HTML</label>
+    <br />
+    <input
+      type="checkbox"
+      id="css"
+      data-testid="css"
+      checked={interests.css}
+      aria-checked={interests.css}
+      onChange={updateInterests}
+    />
+    <label htmlFor="css">CSS</label>
+    <br />
+    <input
+      type="checkbox"
+      id="javascript"
+      data-testid="javascript"
+      checked={interests.javascript}
+      aria-checked={interests.javascript}
+      onChange={updateInterests}
+    />
+    <label htmlFor="javascript">JavaScript</label>
+    <br />
+    <button type="submit">Submit</button>
+  </form>
+  )
 
   return (
     <main>
@@ -37,60 +110,7 @@ function App() {
         <a href="https://github.com">GitHub</a>
         <a href="https://linkedin.com">LinkedIn</a>
       </div>
-      <form onSubmit={handleSubmit}>
-        <h3>Sign up for my Newsletter!</h3>
-        <label htmlFor="name">Enter your Name: </label>
-        <input
-          type="text"
-          value={name}
-          placeholder="Name"
-          id="name"
-          data-testid="name"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <label htmlFor="email">Enter your email address: </label>
-        <input
-          type="text"
-          value={email}
-          id="email"
-          data-testid="email"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder='Email address'
-        />
-        <p>Select your interests</p>
-        <input
-          name="html"
-          type="checkbox"
-          id="html"
-          data-testid="html"
-          checked={htmlIsChecked}
-          aria-checked={htmlIsChecked}
-          onChange={toggleHtml}
-        />
-        <label htmlFor="html">HTML</label>
-        <br />
-        <input
-          type="checkbox"
-          id="css"
-          data-testid="css"
-          checked={cssIsChecked}
-          aria-checked={cssIsChecked}
-          onChange={toggleCss}
-        />
-        <label htmlFor="css">CSS</label>
-        <br />
-        <input
-          type="checkbox"
-          id="javascript"
-          data-testid="javascript"
-          checked={javascriptIsChecked}
-          aria-checked={javascriptIsChecked}
-          onChange={toggleJavascript}
-        />
-        <label htmlFor="javascript">JavaScript</label>
-        <button type="submit">Submit</button>
-      </form>
-      { formSubmitted ? <h2>{name} you are now subscribed!</h2> : null }
+      {formSubmitted ? displayMessage : displayForm}
     </main>
   );
 }

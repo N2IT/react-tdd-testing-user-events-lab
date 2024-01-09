@@ -68,12 +68,12 @@ test("displays the correct links", () => {
 // Newsletter Form - Initial State
 test("the form includes text inputs for name and email address", () => {
   // your test code here
-  render (<App />)
+  render(<App />)
 
   expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/name/i)).toBeInTheDocument();
   expect(screen.getByTestId(/name/i)).toBeInTheDocument();
-  
+
   expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/email address/i)).toBeInTheDocument();
 
@@ -81,7 +81,7 @@ test("the form includes text inputs for name and email address", () => {
 });
 
 test("the form includes three checkboxes to select areas of interest", () => {
-  render (<App />)
+  render(<App />)
 
   const htmlCheckBox = screen.getByRole("checkbox", { name: /html/i })
   const cssCheckBox = screen.getByRole("checkbox", { name: /css/i })
@@ -96,7 +96,7 @@ test("the form includes three checkboxes to select areas of interest", () => {
 
 test("the checkboxes are initially unchecked", () => {
   // your test code here
-  render (<App />)
+  render(<App />)
 
   const htmlCheckBox = screen.getByRole("checkbox", { name: /html/i })
   const cssCheckBox = screen.getByRole("checkbox", { name: /css/i })
@@ -105,13 +105,13 @@ test("the checkboxes are initially unchecked", () => {
   expect(cssCheckBox).not.toBeChecked();
   expect(javascriptCheckBox).not.toBeChecked();
 
-  
+
 })
 
 // Newsletter Form - Adding Responses
 test("the page shows information the user types into the name and email address form fields", () => {
   // your test code here
-  render (<App />)
+  render(<App />)
 
   const name = screen.getByLabelText(/name/i);
   userEvent.type(name, "Tony Eder")
@@ -126,8 +126,8 @@ test("the page shows information the user types into the name and email address 
 
 test("checked status of checkboxes changes when user clicks them", () => {
   // your test code here
-  render (<App />)
-  
+  render(<App />)
+
   const htmlCheckBox = screen.getByRole("checkbox", { name: /html/i })
   const cssCheckBox = screen.getByRole("checkbox", { name: /css/i })
   const javascriptCheckBox = screen.getByRole("checkbox", { name: /javascript/i })
@@ -143,11 +143,25 @@ test("checked status of checkboxes changes when user clicks them", () => {
 
 test("a message is displayed when the user clicks the Submit button", () => {
   // your test code here
-  render (<App />)
+  render(<App />)
+  userEvent.type(screen.getByLabelText(/enter your name/i), "Tony Eder")
+  userEvent.type(screen.getByLabelText(/enter your email address/i), "tonye@rainier.com")
 
+  userEvent.click(screen.getByRole("checkbox", { name: /html/i}))
+  userEvent.click(screen.getByRole("checkbox", { name: /css/i}))
+  userEvent.click(screen.getByRole("checkbox", { name: /javascript/i}))
   userEvent.click(screen.getByRole("button", { name: /submit/i }))
 
-  expect(screen.getByText(/you are now subscribed/i)).toBeInTheDocument()
+  expect(
+    screen.getByText(
+      "Thanks Tony Eder! You are signed up for these Newsletters:"
+    )
+  ).toBeInTheDocument()
 
+  expect(screen.getAllByRole("listitem").length).toBe(3);
+  
+  expect(screen.getByText("Html")).toBeInTheDocument();
+  expect(screen.getByText("CSS")).toBeInTheDocument();
+  expect(screen.getByText("JavaScript")).toBeInTheDocument();
 
 });
